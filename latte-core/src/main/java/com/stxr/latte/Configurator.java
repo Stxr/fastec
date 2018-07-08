@@ -1,10 +1,10 @@
 package com.stxr.latte;
 
-import android.os.Handler;
-import android.view.LayoutInflater;
+import com.joanzapata.iconify.IconFontDescriptor;
+import com.joanzapata.iconify.Iconify;
 
-import java.util.StringTokenizer;
-import java.util.WeakHashMap;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by stxr on 2018/7/8.
@@ -14,7 +14,8 @@ import java.util.WeakHashMap;
 
 public class Configurator {
     //存取配置的map
-    public static final WeakHashMap<String, Object> LATTE_CONFIGS = new WeakHashMap<>();
+    public static final HashMap<String, Object> LATTE_CONFIGS = new HashMap<>();
+    public static final ArrayList<IconFontDescriptor> ICONS = new ArrayList<>();
 
     private Configurator() {
         //默认初始化未配置
@@ -31,11 +32,13 @@ public class Configurator {
     }
 
     public final void configure() {
+        //初始化图标
+        initIcons();
         //配置完毕
         LATTE_CONFIGS.put(ConfigType.CONFIG_READY.name(), true);
     }
 
-    public WeakHashMap<String, Object> getLatteConfigs() {
+    public HashMap<String, Object> getLatteConfigs() {
         return LATTE_CONFIGS;
     }
 
@@ -43,8 +46,23 @@ public class Configurator {
         LATTE_CONFIGS.put(ConfigType.API_HOST.name(), host);
         return this;
     }
+    //从数组里不断添加ICON
+    private void initIcons() {
+        //判断list里有图标
+        if (ICONS.size() > 0) {
+            Iconify.IconifyInitializer initializer = Iconify.with(ICONS.get(0));
+            for (int i = 1; i < ICONS.size(); i++) {
+                initializer.with(ICONS.get(i));
+            }
+        }
+    }
+    //外部调用图标的接口
+    public final Configurator withIcons(IconFontDescriptor fontDescriptor) {
+        ICONS.add(fontDescriptor);
+        return this;
+    }
 
-    private void checkConfiguation() {
+    private void checkConfiguration() {
         final boolean isReady = (boolean) LATTE_CONFIGS.get(ConfigType.CONFIG_READY.name());
         if (!isReady) {
             throw new RuntimeException("Configuration is not ready,Please call configure first");
@@ -52,7 +70,7 @@ public class Configurator {
     }
     @SuppressWarnings("unchecked")
     final <T> T getConfigurations(Enum<ConfigType> key) {
-        checkConfiguation();
+        checkConfiguration();
         return (T) LATTE_CONFIGS.get(key.name());
     }
 }

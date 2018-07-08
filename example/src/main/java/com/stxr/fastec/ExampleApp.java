@@ -2,6 +2,7 @@ package com.stxr.fastec;
 
 import android.app.Application;
 
+import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.stxr.latte.Latte;
 
 /**
@@ -13,6 +14,7 @@ public class ExampleApp extends Application {
     public void onCreate() {
         super.onCreate();
         Latte.init(this)
+                .withIcons(new FontAwesomeModule())
                 .withApiHost("http://127.0.0.1/")
                 .configure();
 
