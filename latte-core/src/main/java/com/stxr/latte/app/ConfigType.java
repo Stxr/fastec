@@ -1,4 +1,4 @@
-package com.stxr.latte;
+package com.stxr.latte.app;
 
 /**
  * Created by stxr on 2018/7/8.

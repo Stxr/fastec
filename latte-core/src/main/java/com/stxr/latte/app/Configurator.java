@@ -1,4 +1,4 @@
-package com.stxr.latte;
+package com.stxr.latte.app;
 
 import com.joanzapata.iconify.IconFontDescriptor;
 import com.joanzapata.iconify.Iconify;

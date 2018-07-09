@@ -1,9 +1,8 @@
-package com.stxr.latte;
+package com.stxr.latte.app;
 
 import android.content.Context;
 
 import java.util.HashMap;
-import java.util.WeakHashMap;
 
 /**
  * Created by stxr on 2018/7/8.
