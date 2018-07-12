@@ -21,7 +21,7 @@ import retrofit2.http.Url;
  * Created by stxr on 2018/7/10.
  */
 
-public interface REstService {
+public interface RestService {
     @GET
     Call<String> get(@Url String url, @QueryMap Map<String, Object> params);
 
