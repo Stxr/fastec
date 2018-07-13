@@ -2,6 +2,7 @@ package com.stxr.fastec;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 
 import com.stxr.latte.delegates.LatteDelegate;
@@ -21,17 +22,16 @@ public class ExampleDelegate extends LatteDelegate {
 
     @Override
     protected void onBindView(@Nullable Bundle savedInstanceState, View rootView) {
-
+        testRestClient();
     }
 
-    private void testRestClent() {
+    private void testRestClient() {
         RestClient.builder()
-                .url("")
-                .params("","")
+                .url("https://github.com/square/retrofit")
                 .success(new ISuccess() {
                     @Override
                     public void onSuccess(String response) {
-
+                        Log.e("tag", response);
                     }
                 })
                 .error(new IError() {
@@ -40,7 +40,8 @@ public class ExampleDelegate extends LatteDelegate {
 
                     }
                 })
-                .build();
+                .build()
+                .get();
     }
 
 }
