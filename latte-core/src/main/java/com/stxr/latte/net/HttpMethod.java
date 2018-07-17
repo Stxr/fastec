@@ -10,5 +10,7 @@ public enum  HttpMethod {
     PUT,
     DELETE,
     UPLOAD,
-    DOWNLOAD
+    DOWNLOAD,
+    POST_RAW,
+    PUT_RAW,
 }
