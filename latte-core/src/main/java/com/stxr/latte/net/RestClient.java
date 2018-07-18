@@ -7,6 +7,7 @@ import com.stxr.latte.net.callback.IFailure;
 import com.stxr.latte.net.callback.IRequest;
 import com.stxr.latte.net.callback.ISuccess;
 import com.stxr.latte.net.callback.RestClientCallback;
+import com.stxr.latte.net.download.DownloadHandler;
 import com.stxr.latte.ui.LatteLoader;
 import com.stxr.latte.ui.LoaderStyle;
 
@@ -18,7 +19,6 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.http.Multipart;
 
 /**
  * Created by stxr on 2018/7/10.
@@ -27,8 +27,12 @@ import retrofit2.http.Multipart;
 public class RestClient {
     private final static WeakHashMap<String, Object> PARAMS = RestCreator.PARAMS;
     private final String URL;
+    private final String DOWNLOAD_DIR;
+    private final String NAME;
+    private final String EXTENSION;
     private final ISuccess SUCCESS;
     private final IError ERROR;
+
     private final IRequest REQUEST;
     private final IFailure FAILURE;
     private final RequestBody REQUESTBODY;
@@ -37,8 +41,11 @@ public class RestClient {
     private final Context CONTEXT;
 
 
-    public RestClient(String url, WeakHashMap<String, Object> params, ISuccess success, IError error, IRequest request, IFailure failure, RequestBody requestbody, LoaderStyle loaderStyle, File file, Context context) {
+    public RestClient(String url, WeakHashMap<String, Object> params, String download_dir, String name, String extension, ISuccess success, IError error, IRequest request, IFailure failure, RequestBody requestbody, LoaderStyle loaderStyle, File file, Context context) {
         URL = url;
+        DOWNLOAD_DIR = download_dir;
+        NAME = name;
+        EXTENSION = extension;
         LOADER_STYLE = loaderStyle;
         FILE = file;
         CONTEXT = context;
@@ -129,4 +136,10 @@ public class RestClient {
     public Callback<String> getRestClientCallback() {
         return new RestClientCallback(URL, SUCCESS, ERROR, REQUEST, FAILURE,LOADER_STYLE);
     }
+
+    public final void download() {
+        new DownloadHandler(URL,DOWNLOAD_DIR,NAME,EXTENSION,SUCCESS,ERROR,REQUEST,FAILURE)
+                .downloadHandler();
+    }
+
 }

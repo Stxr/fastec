@@ -29,6 +29,9 @@ public class RestClientBuilder {
     private LoaderStyle loaderStyle;
     private Context context;
     private File file;
+    private String download_dir;
+    private String name;
+    private String extension;
 
     RestClientBuilder() {
 
@@ -36,6 +39,18 @@ public class RestClientBuilder {
 
     public final RestClientBuilder url(String url) {
         this.url = url;
+        return this;
+    }
+    public final RestClientBuilder dir(String dir) {
+        this.download_dir = dir;
+        return this;
+    }
+    public final RestClientBuilder name(String name) {
+        this.name = name;
+        return this;
+    }
+    public final RestClientBuilder extension(String extension) {
+        this.extension = extension;
         return this;
     }
 
@@ -98,6 +113,6 @@ public class RestClientBuilder {
     }
 
     public final RestClient build() {
-        return new RestClient(url, PARAMS, success, error, request, failure, requestbody, loaderStyle, file, context);
+        return new RestClient(url, PARAMS, download_dir, name, extension, success, error, request, failure, requestbody, loaderStyle, file, context);
     }
 }
