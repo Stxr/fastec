@@ -5,6 +5,9 @@ import com.joanzapata.iconify.Iconify;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
+import okhttp3.Interceptor;
 
 /**
  * Created by stxr on 2018/7/8.
@@ -14,12 +17,13 @@ import java.util.HashMap;
 
 public class Configurator {
     //存取配置的map
-    public static final HashMap<String, Object> LATTE_CONFIGS = new HashMap<>();
+    public static final HashMap<Object, Object> LATTE_CONFIGS = new HashMap<>();
     public static final ArrayList<IconFontDescriptor> ICONS = new ArrayList<>();
+    public static final ArrayList<Interceptor> INTERCEPTORS = new ArrayList<>();
 
     private Configurator() {
         //默认初始化未配置
-        LATTE_CONFIGS.put(ConfigType.CONFIG_READY.name(), false);
+        LATTE_CONFIGS.put(ConfigType.CONFIG_READY, false);
     }
 
     //单例模式
@@ -35,15 +39,15 @@ public class Configurator {
         //初始化图标
         initIcons();
         //配置完毕
-        LATTE_CONFIGS.put(ConfigType.CONFIG_READY.name(), true);
+        LATTE_CONFIGS.put(ConfigType.CONFIG_READY, true);
     }
 
-    public HashMap<String, Object> getLatteConfigs() {
+    public HashMap<Object, Object> getLatteConfigs() {
         return LATTE_CONFIGS;
     }
 
     public final Configurator withApiHost(String host) {
-        LATTE_CONFIGS.put(ConfigType.API_HOST.name(), host);
+        LATTE_CONFIGS.put(ConfigType.API_HOST, host);
         return this;
     }
     //从数组里不断添加ICON
@@ -62,8 +66,19 @@ public class Configurator {
         return this;
     }
 
+    public final Configurator withInterceptor(Interceptor interceptor) {
+        INTERCEPTORS.add(interceptor);
+        LATTE_CONFIGS.put(ConfigType.INTERCEPTOR, INTERCEPTORS);
+        return this;
+    }
+    public final Configurator withInterceptors(List<Interceptor> interceptors) {
+        INTERCEPTORS.addAll(interceptors);
+        LATTE_CONFIGS.put(ConfigType.INTERCEPTOR, INTERCEPTORS);
+        return this;
+    }
+
     private void checkConfiguration() {
-        final boolean isReady = (boolean) LATTE_CONFIGS.get(ConfigType.CONFIG_READY.name());
+        final boolean isReady = (boolean) LATTE_CONFIGS.get(ConfigType.CONFIG_READY);
         if (!isReady) {
             throw new RuntimeException("Configuration is not ready,Please call configure first");
         }
@@ -71,6 +86,6 @@ public class Configurator {
     @SuppressWarnings("unchecked")
     public final <T> T getConfigurations(Enum<ConfigType> key) {
         checkConfiguration();
-        return (T) LATTE_CONFIGS.get(key.name());
+        return (T) LATTE_CONFIGS.get(key);
     }
 }
