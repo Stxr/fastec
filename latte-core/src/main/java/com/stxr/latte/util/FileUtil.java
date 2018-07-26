@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
 
 public class FileUtil {
     public static File writeToDisk(InputStream is, String downloadDir, String name, String extension) {
+        BufferedInputStream bs = new BufferedInputStream(is);
         return null;
     }
     public static File writeToDisk(InputStream is, String downloadDir, String name) {
@@ -22,7 +23,12 @@ public class FileUtil {
     }
 
     public static String getExtension(String fileName) {
-        return "";
+        if (fileName==null) {
+            return null;
+        }
+        int index = fileName.lastIndexOf('.');
+
+        return fileName.substring(index+1,fileName.length());
     }
 
     public static String getRawFile(int rawId) {
